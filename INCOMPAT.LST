@@ -1,0 +1,64 @@
+Known incompatibilities of Partition Resizer with other software
+================================================================
+
+Partition Resizer will behave unpredictably or undesirably in the following 
+cases:
+
+OS/2 & FAT Partitions:
+        Partition Resizer changes the boot sector of the FAT partition it 
+        resizes. OS/2 (if installed on a DOS partition) keeps a copy of the
+        boot sector in a file, in order to use it as an alternative boot 
+        sector for the dual boot utility. I haven't tested this myself, but
+        I've got this report from other users. DO NOT resize your bootable
+        FAT partition (drive C:) if you have OS/2 installed in a FAT partition
+        of your system and you don't completely understand this situation, or
+	don't know how to correct this afterwards.
+Multitasking Environments:
+        It's *really* dangerous to run Partition Resizer from any operating 
+        system other than DOS. This means you should never run Partition 
+        Resizer under Windows, Windows NT, OS/2, Linux (or Linux's DosEmu).
+Secure File System (v.1.0):
+        This program behaves strangely after a resizing. Either don't resize
+        your partitions or remove it. 
+Windows NT partitions:
+        If moved, Windows NT partitions will not boot. I don't know if 
+        anything worse can happen to your data, so don't move them...
+Windows 3.1x Swapfile:
+        If a partition containing a Windows 3.xx swapfile is moved or resized,
+        the swapfile will corrupt. Remove swapfile before (to make more space 
+        available, therefore make resizing faster) and make a new one after 
+        resizing the partition.
+Programs using BIOS alarm:
+        Disable ANY program using BIOS alarm (could be any scheduling or alarm
+        resident program or driver) before running Partition Resizer, 
+        otherwise reset protection mechanism will not work.
+
+As you understand, it's impossible to test Partition Resizer with every 
+existing program or device driver, therefore you should be carefull not to
+use Partition Resizer while running device drivers or programs that are not
+absolutely required for your system to work. If you find any software problem
+or conflict that is caused by Partition Resizer, please inform me ASAP (you
+will find my address at the end of PRESIZER.DOC file).
+
+Known and tested compatibility of Partition Resizer with other software
+=======================================================================
+
+Compression Drivers (Stacker, DoubleSpace, DriveSpace):
+	The above listed drivers are compatible with Partition Resizer, since
+	Partition Resizer ignores compressed drives.
+OnTrack Disk Manager:
+	Partition Resizer is fully compatible with OnTrack Disk Manager, but 
+	the driver must be loaded, otherwise Partition Resizer will report
+	an error (the best thing you can do though, is to get rid of this 
+	driver ASAP; buy a new BIOS for god's shake!).
+Windows 95, 95 OSR2, 98, 98 SR2:
+	Partition Resizer is fully compatible with Windows 95 (this doesn't
+	mean you can run Partition Resizer UNDER Windows 95; you must exit
+	to DOS or Windows 95 real mode first).
+Windows NT Boot Manager, LILO:
+	You will not face any problems with these boot managers, but you
+	have to reinstall them after you run Partition Resizer, in order
+	to import the changes.
+OS/2 Boot Manager:
+	You will have to reinstall the boot manager (using the setup disks
+	and OS/2's FDISK program) right after running Partition Resizer.

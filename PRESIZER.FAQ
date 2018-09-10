@@ -1,0 +1,196 @@
+		      The Partition Resizer FAQ
+
+Please read this document before posting any questions. If you don't find the
+answers you're looking for here, please visit the online version of this
+document at http://members.xoom.com/Zeleps for more up-to-date information.
+
+Q: Why do I need Partition Resizer?
+A: You don't. You can as well backup all your data, use FDISK to repartition
+your drive, and restore the backuped data in the new partition. But while this
+can take sometimes many hours, and this only if you have a tape streamer
+(don't even think about using floppy disks), Partition Resizer will do the job
+in 5-30 minutes in most cases.
+
+Q: Where can I find the latest version of Partition Resizer? A: Best way is to
+get it from this page, which has a new link now, http://zeleps.com (please
+update your bookmarks). Also, you can always find it at c|net downloads
+(download.cnet.com), in any SimTel mirror site, like oak.oakland.edu, or
+nic.funet.fi, in the directory SimTel/msdos/diskutil under the name
+presz???.zip. ??? is the current version number. Another  good way to locate
+the latest version is to perform a web or ftp search, using "presz" as the
+search string (ftp search can be performed at ftpsearch.ntnu.no).
+
+Q: Why does Partition Resizer move all the data around my disk?
+A: This is done for two reasons. Indeed, moving the data is not necessary for
+shrinking a partition. But leaving the data in it's original place, results in
+unused sectors in the partition's FAT, which is lost space. The second reason
+is that you cannot grow a partition without growing it's FAT, and in order to
+grow the FAT, you have to move the data. There is of course a much faster
+method, of moving only the files that reside in the beginning of the
+partition, in order to make space for the FAT, but it is a bit more
+complicated to implement, and I don't feel like spending time for it. Sorry!
+
+Q: Why is it that the program shouldn't be run from the working partition?
+A: When working, the program writes some data in a file. This file is
+overwritten and deleted when the work is over. But after the data moving, DOS
+doesn't know there are changes, so it tries to write the data back to the old
+position of the file. Worse, when the file is deleted, DOS changes the old
+sectors of FAT, which can be any sector in the disk. You understand of course,
+that these random writes on the disk can be a disaster to your data. Apart
+from that, the rescue file is not deleted properly, so the program will find
+it again the next time it runs, and will falsely ask you to continue an
+unfinished work. You don't want to know what will happen to your data if you
+do the same resizing process twice... Partition Resizer v.1.2.0 and later
+detects the partition it is running from, and does not allow any changes to be
+performed on it.
+
+Q: Is Partition Resizer compatible with drive compression software (like
+DoubleSpace or Stacker)?
+A: The program itself works fine with these, since it doesn't consider them as
+drives. Partition Resizer scans ONLY physical drives for partitions. But it
+shouldn't be run from a compressed drive that resides in a partition that will
+be resized or moved. If you're uncertain about that, just run Partition
+Resizer from a bootable floppy disk.
+
+Q: Does Partition Resizer work well with Windows 95 long filenames?
+A: Absolutely. Long filenames are not affected, since the program doesn't mess
+with directory and file descriptors. Of course, you cannot run Partition
+Resizer in a window or a DOS session. You'll have to restart your computer in
+MSDOS mode, lock the disks, and then run presizer.
+
+Q: Does Partition Resizer work well with Windows 95 OSR2 / Windows 98?
+A: Yes.
+
+Q: And what about Windows Me?
+A: Windows Me (Millenium Edition) do not directly support Real Mode
+Applications. Partition Resizer will work under Windows Me only if you boot
+your system from a Windows Me (or other version) bootable floppy. 
+
+Q: Does Partition Resizer resize FAT32 partitions?
+A: Yes, all types of FAT32 partitions.
+
+Q: Can Partition Resizer create or delete partitions?
+A: No. Use FDISK for this job.
+
+Q: Is Partition Resizer compatible with Windows NT / Windows 2000?
+A: Depends. It does not run under Windows NT/2000, and it does not resize NTFS
+partitions, but it can move Windows NT/2000 partitions and it does not damage
+your Windows NT/2000 installation.
+
+Q: I run Partition Resizer on my disk, but my XYZ operating system ™ will no
+longer boot, and the boot manager doesn't work. What happened?
+A: Partition Resizer changes the partition information stored in the disk.
+Most operating systems keep some information about the partition structure in
+order to boot themselves, but this information is not updated at boot time, it
+is stored when the boot manager or the system files are installed. Therefore,
+you should always reinstall boot managers and boot files after you've run
+Partition Resizer. This is true for OS/2 boot manager, Windows NT dual booter
+and Linux's LILO. Read TROUBLE.DOC for more information.
+
+Q: After running Partition Resizer, I can no longer boot from my Har Disk,
+although when I boot from a floppy, I access my partitions normally.
+A: Run "FDISK /mbr" from the DOS prompt and reboot.
+
+Q: Why isn't there an undo option?
+A: There's no need for that. All actions done by Partition Resizer can be
+undone easily by doing the opposite thing from what we want to undo, i.e.
+growing undoes shrinking.
+
+Q: I have a FAT32 partition with cluster size larger than 4K In the resizing
+screen, I can shrink my partition but I cannot grow it, although there is
+empty space beyond the end of the partition.
+A: This is due to a bug, which is fixed in version 1.3.3 and onwards.
+
+Q: I press the left/right arrows repeatedly, but the partition refuses to
+change size. What should I do?
+A: If you were trying to grow the partition, there isn't enough disk space
+available at the end of the drive. If you were trying to shrink the partition,
+there are some files residing at the end of the drive, which do not allow the
+partition to be shrunk. Even if you defragged the drive, there are still be
+some read-only or hidden files remaining at the end of the drive. Please read
+README.1ST for more information on defragmentation. This is the ONLY reason
+that prevents a partition from shrinking. If you think that you fully
+defragged the partition and the arrow keys are still not responding, you are
+wrong, because the partition is NOT YET FULLY DEFRAGGED. Please don't ask me
+to help you in this case, I CANNOT DEFRAG YOUR DRIVE MANUALLY FROM HERE!!! You
+just have to try harder...
+
+Q: Partition Resizer shows 3 partitions in my disk, while I've got 2. Is the
+program going nuts, or is it me the one who needs therapy?
+A: Neither. The third partition shown is an extended partition, a structure in
+the partition table that holds logical drives. Since one of your partitions is
+a logical drive, it needs an extended partition to contain it. For more
+information, check the 3rd section of PRESIZER.DOC file to see some detailed
+explanation of the partition structure.
+
+Q: Is partition "hopping" possible? I mean, can I move a partition over the
+others?
+A: Not directly. If you think about it, there's no need to do that: just
+create a new partition in the destination space, move all your data there, and
+delete the old partition.
+
+Q: Why can't I shrink my extended partition?
+A: It's pretty possible that you have made a common mistake: The extended
+partition is not a data partition. What you might want to resize is a logical
+drive inside the extended partition. Extended partitions are not DOS drives,
+they're just structures that hold logical drives inside them. If you want to
+make more space for a new drive, then you'll have to resize a logical drive
+and not the extended partition. You will only need to resize the extended
+partition if you want to create new partitions with FDISK, since Partition
+Resizer will resize it accordingly when you resize or move other partitions.
+Just read section 3 of PRESIZER.DOC for details.
+
+Q: Can I change a partition's cluster size with Partition Resizer, and keep my
+data?
+A: Yes. You have to make a little empty space in the drive by shrinking the
+original partition, and then create a small partition and start moving your
+data in it, while shrinking the old partition and growing the new one. When
+all the data is in the new partition, change the old partition's cluster size,
+and move the data back to the old partition using the same technique. This
+process might take a bit long, since there's a lot of moving and resizing in
+it. But the whole thing is much faster if you have enough empty space in the
+original partition. I am not planning to implement such functionality in
+Partition Resizer, since it is a complicated matter that requires a lot of
+time to implement.
+
+Q: When I press "y" to start resizing / moving, I get the message: "Warning:
+Cannot create counter overdraught. Press any key...". Is this serious?
+A: No it isn't. Ignore it. Completely.
+
+Q: Why doesn't Partition Resizer look a bit more fancy?
+A: I really do not want to invest time in creating a fancy user interface,
+although it would simplify a few things both for me and the users. If I get
+bored enough, I'll probably do something about it.
+
+Q: Why don't you make Partition Resizer a Win32 program?
+A: This is an option I consider, although it would be a bit complicated. This
+is because all the changes that Partition Resizer does to a hard disk are
+extremely dangerous (although possible - beware!) to be done while under a
+multitasking environment. Therefore, even if the user makes all his selections
+under windows, the program core must be run in DOS mode. I am
+considering the possibility of a Windows interface that will co-exist with the
+current DOS interface (probably in the same EXE file).
+
+Q: Is the source code available?
+A: Nope. Sorry, but I didn't want to give it away for many reasons. After all,
+the program isn't donated to the public domain, it's just freeware. You can
+use it for free, but that's all. So please, don't post any more messages
+requesting the source files.
+
+Q: Why did you give it away for free? Are you stupid?
+A: I really believe in the idea of free software. I had many second thoughts
+on this, but I finally decided that everyone has a right to use this software
+for free as long as he's not using it to get money from others. Postcards are
+coming more frequently now (3-4 per month), a million thanks to everyone for
+your moral support.
+
+Q: How was your navy service?
+A: Long.
+
+Q: OK man, I sent half a thousand e-mails but you continue to ignore me.
+What's the deal here?
+A: OK, I'm back from the navy, but my job doesn't allow me to respond to my
+e-mails regularly. Although I reply to most of the e-mails, I do not at all
+answer to those questions that are listed in this FAQ and I respond to real
+emergencies on priority. Please be patient though, since I'm only answering my
+e-mail once or twice a week.
